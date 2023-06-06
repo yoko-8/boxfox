@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import DBInfoEntry from './DBInfoEntry';
-import Tables from './boxMode/Tables';
-import Uploader from './unboxMode/Uploader';
+import ModeHolder from './ModeHolder';
 
 export default function App() {
   const [dbInfo, setDBInfo] = useState({
@@ -42,9 +41,8 @@ export default function App() {
       <button onClick={(e) => setBoxMode(!isBoxMode)}>Switch Mode</button>
       <DBInfoEntry dbInfo={dbInfo} setDBInfo={setDBInfo} findTables={findTables} />
       {
-        isBoxMode ?
-          <Tables tableList={tableList} getTable={getTable} /> :
-          <Uploader tableList={tableList} />
+        tableList.length ? <ModeHolder isBoxMode={isBoxMode} tableList={tableList} getTable={getTable} dbInfo={dbInfo} /> :
+        <div>Waiting For Connection...</div>
       }
     </div>
   );

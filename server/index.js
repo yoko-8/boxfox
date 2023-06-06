@@ -1,6 +1,17 @@
 require('dotenv').config();
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
+const multer = require('multer');
+
+
+const storage = multer.diskStorage({
+  destination: './server/temp',
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -10,7 +21,7 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // REFACTOR ALL OF THE ABOVE LATER
 // get list of tables
-const { getTableList, getTable } = require('./model');
+const { getTableList, getTable, postTable } = require('./model');
 
 app.get('/tables/:table_name', (req, res) => {
   console.log('req is', req);
@@ -39,11 +50,26 @@ app.get('/tables', (req, res) => {
   });
 });
 
-app.post('/tables', (req, res) => {
-  // const file = req.body;
-  // console.log('file is', file);
-  console.log(req.body);
-  console.log(req.query);
+app.post('/tables', upload.single('csvFile'), (req, res) => {
+  const fileInfo = req.file;
+  const dbInfo = req.query;
+  const absPath = path.resolve(__dirname);
+  const filePath = path.join(absPath, 'temp', fileInfo.originalname);
+
+  postTable(dbInfo, fileInfo, (err, result) => {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.log('uh oh');
+      }
+    })
+
+    if (err) {
+      res.sendStatus(500);
+      console.log('error when posting table to database', err);
+    } else {
+      res.sendStatus(201);
+    }
+  });
 });
 
 
