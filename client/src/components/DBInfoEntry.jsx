@@ -28,7 +28,7 @@ export default function DBInfoEntry({dbInfo, setDBInfo, findTables}) {
         placeholder='password'
         onChange={(e) => setSingleInfo('password', e.target.value)}
       />
-      <button type='submit'>Find Tables To Package!</button>
+      <button type='submit'>Confirm Connection</button>
     </form>
   )
 }
