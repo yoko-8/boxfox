@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import DBInfoEntry from './DBInfoEntry';
 import ModeHolder from './ModeHolder';
+import boxfox from '../images/boxfoxLogo.png';
+import unboxfox from '../images/unboxfoxLogo.png';
 
 export default function App() {
   const [dbInfo, setDBInfo] = useState({
@@ -41,9 +43,19 @@ export default function App() {
   }
 
   return (
-    <div id='App' className='flex justify-center h-screen bg-orange-400'>
+    <div id='App' className='flex justify-center min-h-screen bg-orange-400'>
       <div className='w-1/3'>
-        <button className='w-full mt-4 rounded text-white bg-blue-600 h-10 shadow transform active:scale-95 transition-transform' onClick={(e) => setBoxMode(!isBoxMode)}>Switch Mode</button>
+        <h1 className='flex justify-center font-PaletteMosaic text-6xl'>boxfox</h1>
+        <div className='flex justify-center max-h-72'>
+          {
+            isBoxMode ? <img src={boxfox} alt='boxfox logo' className='object-scale-down' /> :
+            <img src={unboxfox} alt='unboxfox logo' className='object-scale-down' />
+          }
+        </div>
+        <button
+          className='w-full rounded text-white bg-blue-600 h-10 shadow transform active:scale-95 transition-transform'
+          onClick={(e) => setBoxMode(!isBoxMode)}
+        >Switch Mode</button>
         <DBInfoEntry dbInfo={dbInfo} setDBInfo={setDBInfo} findTables={findTables} />
         <div className='p-2 bg-white rounded shadow'>
         {
