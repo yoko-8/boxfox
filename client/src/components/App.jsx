@@ -13,16 +13,20 @@ export default function App() {
   });
   const [tableList, setTableList] = useState([]);
   const [isBoxMode, setBoxMode] = useState(true);
+  const [status, setStatus] = useState('Not Connected Yet.');
 
   const findTables = () => {
+    setStatus('Connecting...');
+
     axios.get('/tables', {params: { dbInfo }})
       .then((result) => {
         console.log('successfully retrieved table names from db', result.data);
+        setStatus('Connected!');
         setTableList(result.data);
       })
       .catch((err) => {
         console.log('error on retrieving table names from db', err);
-        // input logic to show that the info input was wrong
+        setStatus('Could not connect. Check credentials.')
       })
   };
 
@@ -38,13 +42,13 @@ export default function App() {
 
   return (
     <div id='App' className='flex justify-center h-screen bg-orange-400'>
-      <div className='w-1/4'>
-        <button className='w-full' onClick={(e) => setBoxMode(!isBoxMode)}>Switch Mode</button>
+      <div className='w-1/3'>
+        <button className='w-full mt-4 rounded text-white bg-blue-600 h-10 shadow transform active:scale-95 transition-transform' onClick={(e) => setBoxMode(!isBoxMode)}>Switch Mode</button>
         <DBInfoEntry dbInfo={dbInfo} setDBInfo={setDBInfo} findTables={findTables} />
-        <div className='flex justify-center p-2 bg-neutral-300 rounded'>
+        <div className='flex justify-center p-2 bg-white rounded shadow'>
         {
           tableList.length ? <ModeHolder isBoxMode={isBoxMode} tableList={tableList} getTable={getTable} dbInfo={dbInfo} /> :
-          <div>Not Connected Yet</div>
+          <div>{status}</div>
         }
         </div>
       </div>
