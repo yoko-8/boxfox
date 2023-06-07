@@ -37,13 +37,17 @@ export default function App() {
   }
 
   return (
-    <div id="App">
-      <button onClick={(e) => setBoxMode(!isBoxMode)}>Switch Mode</button>
-      <DBInfoEntry dbInfo={dbInfo} setDBInfo={setDBInfo} findTables={findTables} />
-      {
-        tableList.length ? <ModeHolder isBoxMode={isBoxMode} tableList={tableList} getTable={getTable} dbInfo={dbInfo} /> :
-        <div>Waiting For Connection...</div>
-      }
+    <div id='App' className='flex justify-center h-screen bg-orange-400'>
+      <div className='w-1/4'>
+        <button className='w-full' onClick={(e) => setBoxMode(!isBoxMode)}>Switch Mode</button>
+        <DBInfoEntry dbInfo={dbInfo} setDBInfo={setDBInfo} findTables={findTables} />
+        <div className='flex justify-center p-2 bg-neutral-300 rounded'>
+        {
+          tableList.length ? <ModeHolder isBoxMode={isBoxMode} tableList={tableList} getTable={getTable} dbInfo={dbInfo} /> :
+          <div>Not Connected Yet</div>
+        }
+        </div>
+      </div>
     </div>
   );
 }

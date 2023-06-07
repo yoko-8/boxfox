@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx webpack --mode production",
     "start": "node ./server/index.js",
-    "dev": "npx webpack --watch --mode development & npx nodemon --watch ./server ./server/index.js"
+    "dev": "npx webpack --watch --mode development & npx nodemon --watch ./server ./server/index.js",
+    "tailwind": "npx tailwindcss -i ./client/dist/styles.css -o ./client/dist/output.css --watch"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "eslint": "^8.42.0",
     "nodemon": "^2.0.22",
     "style-loader": "^3.3.3",
+    "tailwindcss": "^3.3.2",
     "webpack": "^5.85.1",
     "webpack-cli": "^5.1.3"
   }

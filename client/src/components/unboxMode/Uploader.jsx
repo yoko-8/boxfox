@@ -6,6 +6,12 @@ export default function Uploader({ tableList, dbInfo }) {
   const [isFilePicked, setIsFilePicked] = useState(false);
 
   const changeHandler = (event) => {
+    // // 'naive' fix attempt below
+    // if (event.target.files[0] !== undefined) {
+    //   setSelectedFile(event.target.files[0]);
+    //   setIsFilePicked(true);
+    // }
+
     setSelectedFile(event.target.files[0]);
     setIsFilePicked(true);
   };
@@ -46,7 +52,7 @@ export default function Uploader({ tableList, dbInfo }) {
             </p>
           </div>
         ) : (
-          <p>Select a file to show details</p>
+          <p>Select a .csv file</p>
         )}
       </form>
       <button onClick={handleSubmission}>Submit</button>
