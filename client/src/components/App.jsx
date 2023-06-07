@@ -45,10 +45,10 @@ export default function App() {
       <div className='w-1/3'>
         <button className='w-full mt-4 rounded text-white bg-blue-600 h-10 shadow transform active:scale-95 transition-transform' onClick={(e) => setBoxMode(!isBoxMode)}>Switch Mode</button>
         <DBInfoEntry dbInfo={dbInfo} setDBInfo={setDBInfo} findTables={findTables} />
-        <div className='flex justify-center p-2 bg-white rounded shadow'>
+        <div className='p-2 bg-white rounded shadow'>
         {
           tableList.length ? <ModeHolder isBoxMode={isBoxMode} tableList={tableList} getTable={getTable} dbInfo={dbInfo} /> :
-          <div>{status}</div>
+          <div className='flex justify-center'>{status}</div>
         }
         </div>
       </div>

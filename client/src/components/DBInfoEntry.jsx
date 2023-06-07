@@ -9,24 +9,24 @@ export default function DBInfoEntry({dbInfo, setDBInfo, findTables}) {
       findTables();
     }}>
       <div className='flex my-1 justify-between'>
-        <input className='w-4/5 rounded shadow bg-neutral-200'
+        <input className='w-4/5 rounded shadow bg-neutral-200 focus:outline-none px-2'
           placeholder='host'
           onChange={(e) => setSingleInfo('host', e.target.value)}
         />
-        <input className=' w-1/6 rounded shadow bg-neutral-200'
+        <input className=' w-1/6 rounded shadow bg-neutral-200 focus:outline-none px-2'
           placeholder='port'
           onChange={(e) => setSingleInfo('port', e.target.value)}
         />
       </div>
-      <input className='my-1 rounded shadow bg-neutral-200'
+      <input className='my-1 rounded shadow bg-neutral-200 focus:outline-none px-2'
         placeholder='database name'
         onChange={(e) => setSingleInfo('database', e.target.value)}
       />
-      <input className='my-1 rounded shadow bg-neutral-200'
+      <input className='my-1 rounded shadow bg-neutral-200 focus:outline-none px-2'
         placeholder='username'
         onChange={(e) => setSingleInfo('user', e.target.value)}
       />
-      <input className='my-1 rounded shadow bg-neutral-200'
+      <input className='my-1 rounded shadow bg-neutral-200 focus:outline-none px-2'
         placeholder='password'
         onChange={(e) => setSingleInfo('password', e.target.value)}
       />
