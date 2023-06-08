@@ -44,18 +44,13 @@ export default function Uploader({ tableList, dbInfo }) {
         {isFilePicked ? (
           <div>
             <p>Filename: {selectedFile.name}</p>
-            <p>Filetype: {selectedFile.type}</p>
-            <p>Size in bytes: {selectedFile.size}</p>
-            <p>
-              lastModifiedDate:{' '}
-              {selectedFile.lastModifiedDate.toLocaleDateString()}
-            </p>
           </div>
         ) : (
           <p>Select a .csv file</p>
         )}
       </form>
-      <button onClick={handleSubmission}>Submit</button>
+      <button className='rounded text-white bg-blue-600 w-16 shadow transform active:scale-95 transition-transform'
+      onClick={handleSubmission}>Submit</button>
     </div>
   )
 }
