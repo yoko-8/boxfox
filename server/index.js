@@ -65,7 +65,7 @@ app.post('/tables', upload.single('csvFile'), (req, res) => {
 
     if (err) {
       res.sendStatus(500);
-      console.log('error when posting table to database', err);
+      // console.log('error when posting table to database', err);
     } else {
       res.sendStatus(201);
     }

@@ -67,22 +67,21 @@ module.exports = {
         callback(err);
         return;
       } else {
+        let rowsArray = res.split('\n');
         let columnsArray = res.split('\n')[0].split(',');
-        let firstRow = res.split('\n')[1].split(',');
         let createTableQuery = 'CREATE TABLE ' + tableName + ' (id SERIAL UNIQUE PRIMARY KEY, ';
 
-        let i = 0;
-        if (columnsArray[0] === 'id') {
-          i++;
+        if (columnsArray[0] !== 'id') {
+          callback(err);
+          return;
         }
 
-        for (i; i < columnsArray.length; i++) {
+        for (let i = 1; i < columnsArray.length; i++) {
           createTableQuery += columnsArray[i] + ' TEXT';
           if (i !== columnsArray.length - 1) {
             createTableQuery += ', '
           }
         }
-
         createTableQuery += ')';
 
 
@@ -97,14 +96,32 @@ module.exports = {
                   callback(err);
                 } else {
 
-                  client.query(`COPY ${tableName} FROM '${filePath}' DELIMITER ',' CSV HEADER`, (err, res) => {
-                    if (err) {
-                      callback(err);
-                    } else {
-                      callback(null);
-                    }
-                    client.end();
-                  })
+                  let j = 1;
+                  function writeDB() {
+                    let singlequotified = rowsArray[j].split(',').map((element) => {
+                      return "'" + element + "'";
+                    }).join(',');
+                    let queryString = 'INSERT INTO ' + tableName + ' VALUES (' + singlequotified + ')';
+
+                    console.log(queryString);
+
+                    client.query(queryString, (err, res) => {
+                      if (err) {
+                        console.log('error happened', err);
+
+                        callback(err);
+                      } else {
+                        console.log('success!', j);
+                        if (j < rowsArray.length - 2) {
+                          writeDB(j++);
+                        } else {
+                          callback(null);
+                        }
+                      }
+                    })
+                  }
+                  writeDB();
+
 
                 }
               })
