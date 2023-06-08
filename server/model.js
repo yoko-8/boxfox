@@ -27,8 +27,6 @@ module.exports = {
   },
 
   getTable(dbInfo, tableName, callback) {
-    const fileName = tableName + '.csv';
-    const filePath = path.join(homeDirectory, 'Downloads', fileName);
     const client = new Client({
       user: dbInfo.user,
       host: dbInfo.host,
@@ -37,15 +35,23 @@ module.exports = {
       port: dbInfo.port,
     });
     client.connect((err) => {
-      client.query(`COPY ${tableName} TO '${filePath}' DELIMITER ',' CSV HEADER`,
+      client.query(`SELECT * FROM ${tableName}`,
       (err, res) => {
         if (err) {
           callback(err);
         } else {
-          callback(null);
+          const resArray = res.rows;
+          let csvString = Object.keys(resArray[0]).join(',') + '\n';
+
+          for (let i = 0; i < resArray.length; i++) {
+            let valString = Object.values(resArray[i]);
+            csvString += valString + '\n'
+          }
+          callback(null, csvString);
+
         }
-        client.end();
       })
+
     });
   },
 
@@ -84,7 +90,6 @@ module.exports = {
         }
         createTableQuery += ')';
 
-
         client.connect((err) => {
           client.query(`DROP TABLE IF EXISTS ${tableName}`, (err, res) => {
             if (err) {
@@ -103,15 +108,10 @@ module.exports = {
                     }).join(',');
                     let queryString = 'INSERT INTO ' + tableName + ' VALUES (' + singlequotified + ')';
 
-                    console.log(queryString);
-
                     client.query(queryString, (err, res) => {
                       if (err) {
-                        console.log('error happened', err);
-
                         callback(err);
                       } else {
-                        console.log('success!', j);
                         if (j < rowsArray.length - 2) {
                           writeDB(j++);
                         } else {

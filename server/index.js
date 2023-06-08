@@ -33,7 +33,7 @@ app.get('/tables/:table_name', (req, res) => {
       res.sendStatus(500);
       console.log(`error when querying database for ${tableName} table`, err);
     } else {
-      res.sendStatus(200);
+      res.status(200).send(result);
     }
   });
 })
@@ -65,7 +65,6 @@ app.post('/tables', upload.single('csvFile'), (req, res) => {
 
     if (err) {
       res.sendStatus(500);
-      // console.log('error when posting table to database', err);
     } else {
       res.sendStatus(201);
     }

@@ -35,11 +35,29 @@ export default function BoxFox({ switchPage }) {
 
   const getTable = (tableName) => {
     axios.get('/tables/' + tableName, {params: { dbInfo }})
-      .then(() => {
-        // input logic to show that the file has been downloaded into the downloads folder
+      .then((result) => {
+        const data = result.data;
+
+        // Create a Blob object from the CSV string
+        const blob = new Blob([data], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a link element for downloading
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'data.csv');
+        document.body.appendChild(link);
+
+        // Programmatically click the link to trigger the download
+        link.click();
+
+        // Cleanup by revoking the URL and removing the link element
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
       })
       .catch((err) => {
         // input logic that something went wrong
+        console.log('error on retrieving table from db', err);
       })
   }
 
